@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-export default function index() {
+export default function question() {
   return (
     <View>
-      <Text>page one</Text>
+      <Text>question</Text>
     </View>
   );
 }
