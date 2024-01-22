@@ -17,21 +17,7 @@ export default function Questionnaire() {
   const [inputValue, setInputValue] = useState("");
   const [showInput, setShowInput] = useState(false);
 
-  // const handleAnswer = (answer: string) => {
-  //   if (answer.includes("please specify")) {
-  //     setShowInput(true);
-  //   } else {
-  //     setAnswers({
-  //       ...answers,
-  //       [questions[currentQuestionIndex].question]: answer,
-  //     });
-  //     setCurrentQuestionIndex(currentQuestionIndex + 1);
-  //   }
-  // };
-
-  // const handleInputBlur = () => {
-  //   handleAnswer(inputValue);
-  //   setInputValue(""); // reset the TextInput value
+ 
   // };
   const [selectedOption, setSelectedOption] = useState<string | null>(null); // new state for the selected option
 
