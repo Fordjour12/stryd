@@ -1,4 +1,5 @@
 import Colors from "@/constants/Colors";
+import { Link } from "expo-router";
 import React from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -17,7 +18,6 @@ export default function Notification() {
         </Text>
       </View>
       <Image source={notifyImageSource} style={styles.notifyImg} />
-
       <View style={{ gap: 13, marginVertical: 20 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
           <Image source={starImageSource} style={styles.img} />
@@ -44,17 +44,20 @@ export default function Notification() {
           </Text>
         </View>
       </View>
-      <Pressable style={styles.allow}>
-        <Text
-          style={{
-            color: "white",
-            fontSize: 16,
-            fontFamily: "Raleway-SemiBold",
-          }}
-        >
-          Allow Notification
-        </Text>
-      </Pressable>
+      //TODO: this is not a link
+      <Link href="/(questions)/question">
+        <Pressable style={styles.allow}>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 16,
+              fontFamily: "Raleway-SemiBold",
+            }}
+          >
+            Allow Notification
+          </Text>
+        </Pressable>
+      </Link>
     </View>
   );
 }
