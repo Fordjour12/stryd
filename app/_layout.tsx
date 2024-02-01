@@ -24,6 +24,9 @@ const tokenCache = {
   },
 };
 
+// @ts-ignore
+window.navigator.userAgent = "ReactNative";
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
