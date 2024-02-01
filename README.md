@@ -14,19 +14,25 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-1. Clone the repository:
+- Clone the repository:
 
 ```sh
 git clone <repository-url>
 ```
 
-2. Installing:
+- Installing:
 
 ```sh
 npm install
 ```
 
-3. Starting the dev server
+- Building the project
+
+```sh
+npx expo run:android
+```
+
+- Starting the dev server
 
 ```sh
 npx expo start --dev-client

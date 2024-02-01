@@ -1,6 +1,6 @@
-import { ClerkProvider } from "@clerk/clerk-expo";
+import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
@@ -73,18 +73,18 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  // const { isLoaded, isSignedIn } = useAuth();
-  // const router = useRouter();
-  // useEffect(() => {
-  //   if (isLoaded && !isSignedIn) {
-  //     router.push("/(auth)/auth");
-  //     console.log("isLoaded", isLoaded);
-  //     console.log("isSignedIn", isSignedIn);
-  //   }
-  // }, [isLoaded]);
+  const { isLoaded, isSignedIn } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push("/(auth)/auth");
+      // console.log("isLoaded", isLoaded);
+      // console.log("isSignedIn", isSignedIn);
+    }
+  }, [isLoaded]);
   return (
     <Stack>
-      {/* <Stack.Screen name="(auth)" options={{ headerShown: false }} /> */}
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen name="(questions)" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
     </Stack>
