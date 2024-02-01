@@ -1,40 +1,41 @@
+import { db } from "@/constants/firebase";
 import data from "@/onboardingquestion.json";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { Button, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-// interface Question {
-// question: string;
-// options: string[];
-// }
 
 const questions = data.questions;
 
-// Assuming questions is the array of questions imported from your JSON file
-
 export default function Questionnaire() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [answers, setAnswers] = useState<Record<string, string>>();
   const [inputValue, setInputValue] = useState("");
-  const [showInput, setShowInput] = useState(false);
 
- 
-  // };
-  const [selectedOption, setSelectedOption] = useState<string | null>(null); // new state for the selected option
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
-  const handleOptionPress = (option: any) => {
+  const handleOptionPress = async (option: any) => {
     setSelectedOption(option);
     if (!option.includes("please specify")) {
       handleAnswer(option);
     }
   };
 
-  const handleAnswer = (answer: string) => {
-    setAnswers({
+  const handleAnswer = async (answer: string) => {
+    const answerToQuestions = {
       ...answers,
       [questions[currentQuestionIndex].question]: answer,
-    });
+    };
+
+    setAnswers(answerToQuestions);
     setCurrentQuestionIndex(currentQuestionIndex + 1);
     setSelectedOption(null); // reset the selected option
+
+    try {
+      await setDoc(doc(db, "answers", "questionnaire"), answerToQuestions);
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   };
 
   const handleInputBlur = () => {
@@ -43,20 +44,32 @@ export default function Questionnaire() {
   };
 
   if (currentQuestionIndex >= questions.length) {
-    return <div>Thank you for answering the questions!</div>;
+    return (
+      <View>
+        <Text>Thank you for answering the questions!</Text>
+      </View>
+    );
+  }
+
+  async function nogree() {
+    const docRef = await addDoc(collection(db, "cities"), {
+      name: "Tokyo",
+      country: "Japan",
+    });
   }
 
   return (
     <SafeAreaView>
       <View>
         <Text>{questions[currentQuestionIndex].question}</Text>
-        {/* {questions[currentQuestionIndex].options?.map((option) => (
+        {/*{questions[currentQuestionIndex].options?.map((option) => (
           <Button
             key={option}
             onPress={() => handleOptionPress(option)}
             title={option}
           />
-        ))} */}
+        ))} 
+        */}
         {questions[currentQuestionIndex].options ? (
           questions[currentQuestionIndex].options?.map((option: string) => (
             <Button
