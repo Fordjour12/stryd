@@ -21,5 +21,5 @@ export default {
   slateDarker: "hsl(210 20% 30% )",
   coral: "hsl(16, 100%, 60%)",
   coralDark: "hsl(16 100% 50% )",
-  coralDaker: "hsl(16 100% 40% )",
+  coralDarker: "hsl(16 100% 40% )",
 };
