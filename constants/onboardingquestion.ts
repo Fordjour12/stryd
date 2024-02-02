@@ -43,16 +43,31 @@ export const questions = [
     question:
       "How much time per day or week can you realistically commit to exercise?",
     options: ["Less than 30", "30-60 minutes", "60+ minutes"],
+    images: [
+      require("../assets/images/30.png"),
+      require("../assets/images/45.png"),
+      require("../assets/images/60.png"),
+    ],
   },
   {
     question:
       "Do you have any specific types of exercise or activities you enjoy?",
-    options: ["Cardio", "Strength Training", "Yoga", "Other (please specify)"],
+    options: ["Cardio", "Strength Training", "Yoga", "Other (Specify)"],
+    images: [
+      require("../assets/images/cardio.png"),
+      require("../assets/images/strength.png"),
+      require("../assets/images/yoga.png"),
+      require("../assets/images/question-mark.png"),
+    ],
   },
   {
     question:
       "Do you have access to fitness equipment, or do you prefer equipment-free workouts?",
     options: ["Equipment", "No Equipment"],
+    images: [
+      require("../assets/images/equipment.png"),
+      require("../assets/images/no-equipment.png"),
+    ],
   },
   {
     question:
