@@ -1,8 +1,10 @@
+import Colors from "@/constants/Colors";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { useFonts } from "expo-font";
 import { Stack, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
@@ -32,10 +34,10 @@ export {
   ErrorBoundary,
 } from "expo-router";
 
-// export const unstable_settings = {
-//   // Ensure that reloading on `/modal` keeps a back button present.
-//   initialRouteName: "(tabs)",
-// };
+export const unstable_settings = {
+  // Ensure that reloading on `/modal` keeps a back button present.
+  initialRouteName: "(tabs)",
+};
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -81,18 +83,25 @@ function RootLayoutNav() {
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
       router.push("/(auth)/auth");
-      // console.log("isLoaded", isLoaded);
-      // console.log("isSignedIn", isSignedIn);
+    } else {
+      router.push("/(tabs)/training");
     }
   }, [isLoaded]);
   return (
-    <Stack>
-      <Stack.Screen
-        name="(auth)"
-        options={{ headerShown: false, presentation: "modal" }}
+    <>
+      <Stack>
+        <Stack.Screen
+          name="(auth)"
+          options={{ headerShown: false, presentation: "modal" }}
+        />
+        <Stack.Screen name="(questions)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+      <StatusBar
+        style="dark"
+        translucent={false}
+        backgroundColor={Colors.slateDarker}
       />
-      <Stack.Screen name="(questions)" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    </>
   );
 }
