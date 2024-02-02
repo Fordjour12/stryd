@@ -44,12 +44,6 @@ export default function Login() {
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  React.useEffect(() => {
-    console.log("Email:", emailAddress);
-    console.log("Password:", password);
-  }, [emailAddress,password]);
-
-
   return (
     <View style={styles.container}>
       <View>
