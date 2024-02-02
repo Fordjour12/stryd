@@ -1,8 +1,11 @@
 import AnswersBox from "@/components/AnswersBox";
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
+import { db } from "@/constants/firebase";
 import { questions } from "@/constants/onboardingquestion";
-import { Link } from "expo-router";
+import { useAuth } from "@clerk/clerk-expo";
+import { Link, router } from "expo-router";
+import { doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import {
   Pressable,
@@ -28,8 +31,11 @@ export default function Question() {
     setInputValue("");
   }
 
+  const { userId, isSignedIn } = useAuth();
+  const user = String(userId);
+
   // answering the question
-  const handleAnswer = (answer: string) => {
+  const handleAnswer = async (answer: string) => {
     const answerToQuestion = {
       ...answers,
       [questions[currentQuestionIndex].question]: answer,
@@ -40,6 +46,15 @@ export default function Question() {
     setAnswers(answerToQuestion);
     setCurrentQuestionIndex(currentQuestionIndex + 1);
     setSelectedOption(null);
+
+    if (isSignedIn) {
+      try {
+        await setDoc(doc(db, "preferences", user), answerToQuestion);
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      }
+    }
+    return router.replace("/(auth)/login");
   };
 
   const handleOptionPress = (option: string) => {
@@ -54,9 +69,9 @@ export default function Question() {
       <View style={styles.container}>
         <Text>Thank you for answering the questions!</Text>
 
-        <Link href="/" asChild>
+        <Link href="/" asChild style={[defaultStyles.btn, { padding: 10 }]}>
           <Pressable>
-            <Text>Completed</Text>
+            <Text style={{ color: "white" }}>Completed</Text>
           </Pressable>
         </Link>
       </View>
@@ -97,7 +112,17 @@ export default function Question() {
               )
             )}
           </View>
-        ) : null}
+        ) : (
+          <View style={{ paddingHorizontal: 10, width: "100%" }}>
+            <TextInput
+              style={defaultStyles.inputField}
+              value={inputValue}
+              onChangeText={setInputValue}
+              onBlur={handleInputBlur}
+              placeholder="Please Specify"
+            />
+          </View>
+        )}
       </View>
       {selectedOption?.includes("Specify") && (
         <TextInput
