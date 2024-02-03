@@ -4,6 +4,7 @@ import { useWarmUpBrowser } from "@/hooks/warmUpBrowser";
 import { useOAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { getItemAsync } from "expo-secure-store";
 import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
@@ -16,7 +17,20 @@ enum AuthType {
 export default function Login() {
   useWarmUpBrowser();
 
-  // const router = useRouter();
+  const checkCompletionStatus = async () => {
+    try {
+      const questionCompleted = await getItemAsync("questionCompleted");
+      if (questionCompleted === "true") {
+        router.replace("/(tabs)/");
+      }
+    } catch (error) {
+      console.error("Error checking completion status:", error);
+    }
+  };
+
+  // useEffect(() => {
+  //   checkCompletionStatus()
+  // },[])
 
   const { startOAuthFlow: googleAuth } = useOAuth({ strategy: "oauth_google" });
   const { startOAuthFlow: facebookAuth } = useOAuth({
@@ -32,12 +46,12 @@ export default function Login() {
     try {
       const { createdSessionId, setActive } = await authTypeMap();
 
+      console.log(createdSessionId);
       if (createdSessionId) {
-        setActive?.({ session: createdSessionId });
-        // router.push("/(tabs)/");
-        router.replace("/(questions)/question");
+        setActive!({ session: createdSessionId });
+        router.replace("/(questions)/");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("OAuth error", error);
     }
   };
