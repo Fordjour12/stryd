@@ -24,7 +24,7 @@ type ButtonProps = {
 
 const CxButton = (props: ButtonProps) => {
   return (
-    <TouchableOpacity style={defaultStyles.btn}>
+    <TouchableOpacity style={defaultStyles.btn} onPress={props.onPress}>
       <Text style={defaultStyles.btnText}>{props.text}</Text>
     </TouchableOpacity>
   );
