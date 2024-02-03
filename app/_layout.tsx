@@ -1,4 +1,3 @@
-import Colors from "@/constants/Colors";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { useFonts } from "expo-font";
 import { Stack, useRouter } from "expo-router";
@@ -6,6 +5,7 @@ import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
@@ -36,7 +36,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "(tabs)/",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -78,15 +78,17 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isLoaded, isSignedIn, sessionId } = useAuth();
+
   const router = useRouter();
   useEffect(() => {
+    const getkey = SecureStore.getItem("key");
+
     if (isLoaded && !isSignedIn) {
       router.push("/(auth)/auth");
-    } else {
-      router.push("/(tabs)/training");
     }
   }, [isLoaded]);
+
   return (
     <>
       <Stack>
@@ -98,7 +100,7 @@ function RootLayoutNav() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
       <StatusBar
-        style="dark"
+        style="auto"
         translucent={false}
         backgroundColor={Colors.slateDarker}
       />
