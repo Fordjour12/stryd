@@ -4,7 +4,7 @@ import { defaultStyles } from "@/constants/Styles";
 import { db } from "@/constants/firebase";
 import { questions } from "@/constants/onboardingquestion";
 import { useAuth } from "@clerk/clerk-expo";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import { doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import {
@@ -54,7 +54,6 @@ export default function Question() {
         console.error("Error adding document: ", error);
       }
     }
-    return router.replace("/(auth)/login");
   };
 
   const handleOptionPress = (option: string) => {
@@ -68,8 +67,14 @@ export default function Question() {
     return (
       <View style={styles.container}>
         <Text>Thank you for answering the questions!</Text>
-
-        <Link href="/" asChild style={[defaultStyles.btn, { padding: 10 }]}>
+        <Link
+          replace
+          href="/(tabs)/"
+          style={[
+            defaultStyles.btn,
+            { paddingHorizontal: 10, alignItems: "center" },
+          ]}
+        >
           <Pressable>
             <Text style={{ color: "white" }}>Completed</Text>
           </Pressable>
