@@ -86,6 +86,8 @@ function RootLayoutNav() {
 
     if (isLoaded && !isSignedIn) {
       router.push("/(auth)/auth");
+    } else if (isLoaded && isSignedIn) {
+      router.push("/(questions)/weight");
     }
   }, [isLoaded]);
 
