@@ -1,6 +1,12 @@
 import { defaultStyles } from "@/constants/Styles";
 import React, { ReactNode } from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 
 type SocialProps = {
   SocialText: string;
@@ -20,11 +26,15 @@ const CxButtonSocial = (props: SocialProps) => {
 type ButtonProps = {
   onPress?: () => void;
   text: string;
+  style?: StyleProp<ViewStyle>;
 };
 
 const CxButton = (props: ButtonProps) => {
   return (
-    <TouchableOpacity style={defaultStyles.btn} onPress={props.onPress}>
+    <TouchableOpacity
+      style={[defaultStyles.btn, props.style]}
+      onPress={props.onPress}
+    >
       <Text style={defaultStyles.btnText}>{props.text}</Text>
     </TouchableOpacity>
   );
