@@ -6,6 +6,8 @@ export default function BoardedLayout() {
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="notification" options={{ headerShown: false }} />
+      <Stack.Screen name="weight" options={{ headerShown: false }} />
+      <Stack.Screen name="height" options={{ headerShown: false }} />
     </Stack>
   );
 }
