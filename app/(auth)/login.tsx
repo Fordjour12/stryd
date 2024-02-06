@@ -49,7 +49,8 @@ export default function Login() {
       console.log(createdSessionId);
       if (createdSessionId) {
         setActive!({ session: createdSessionId });
-        router.replace("/(questions)/");
+        // router.replace("/(questions)/");
+        router.replace("/(questions)/weight");
       }
     } catch (error: any) {
       console.error("OAuth error", error);
