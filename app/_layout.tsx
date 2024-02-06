@@ -3,7 +3,9 @@ import { useFonts } from "expo-font";
 import { Stack, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
@@ -24,15 +26,18 @@ const tokenCache = {
   },
 };
 
+// @ts-ignore
+window.navigator.userAgent = "ReactNative";
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from "expo-router";
 
-// export const unstable_settings = {
-//   // Ensure that reloading on `/modal` keeps a back button present.
-//   initialRouteName: "(tabs)",
-// };
+export const unstable_settings = {
+  // Ensure that reloading on `/modal` keeps a back button present.
+  initialRouteName: "(tabs)/",
+};
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -73,20 +78,34 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isLoaded, isSignedIn, sessionId } = useAuth();
+
   const router = useRouter();
   useEffect(() => {
+    const getkey = SecureStore.getItem("key");
+
     if (isLoaded && !isSignedIn) {
       router.push("/(auth)/auth");
-      // console.log("isLoaded", isLoaded);
-      // console.log("isSignedIn", isSignedIn);
+    } else if (isLoaded && isSignedIn) {
+      router.push("/(questions)/weight");
     }
   }, [isLoaded]);
+
   return (
-    <Stack>
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      <Stack.Screen name="(questions)" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <>
+      <Stack>
+        <Stack.Screen
+          name="(auth)"
+          options={{ headerShown: false, presentation: "modal" }}
+        />
+        <Stack.Screen name="(questions)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+      <StatusBar
+        style="auto"
+        translucent={false}
+        backgroundColor={Colors.slateDarker}
+      />
+    </>
   );
 }
